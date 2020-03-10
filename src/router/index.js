@@ -66,150 +66,97 @@ export const constantRoutes = [
         component: () => import('@/views/finance/ticket'),
         meta: { title: '发票配送', icon: 'dashboard' }
       }
-      // 缴费记录，可通过订单列表筛选获取，或者在订单列表做一个一键导出缴费记录
-      // {
-      //   path: 'fee',
-      //   name: 'Fee',
-      //   component: () => import('@/views/finance/fee'),
-      //   meta: { title: '缴费记录', icon: 'dashboard' }
-      // }
     ]
   },
 
   // 运营工具 === 偷懒工具 文案、图标、banner等丢给运营维护
-  {
-    path: '/operate',
-    component: Layout,
-    redirect: '/operate/portal',
-    meta: { title: '运营工具', icon: 'example' },
-    children: [
-      {
-        path: 'portal',
-        meta: { title: '站点管理' },
-        component: () => import('@/views/operate/portal/index'), // Parent router-view
-        children: [
-          {
-            path: 'nav',
-            component: () => import('@/views/operate/news'),
-            meta: { title: '基本信息', icon: 'table' }
-          },
-          {
-            path: 'nav',
-            component: () => import('@/views/operate/news'),
-            meta: { title: '头部导航', icon: 'table' }
-          },
-          {
-            path: 'nav',
-            component: () => import('@/views/operate/news'),
-            meta: { title: '底部导航', icon: 'table' }
-          },
-          {
-            path: 'nav',
-            component: () => import('@/views/operate/news'),
-            meta: { title: '友情链接', icon: 'table' }
-          }
+  // {
+  //   path: '/operate',
+  //   component: Layout,
+  //   redirect: '/operate/portal',
+  //   meta: { title: '运营工具', icon: 'example' },
+  //   children: [
+  //     {
+  //       path: 'portal',
+  //       meta: { title: '站点管理' },
+  //       component: () => import('@/views/operate/portal/index'), // Parent router-view
+  //       children: [
+  //         // 网站名称、 logo、公众号二维码 脚注信息、是否打开网站、导航、seo设置、
+  //         {
+  //           path: 'nav',
+  //           component: () => import('@/views/operate/news'),
+  //           meta: { title: '基本设置', icon: 'table' }
+  //         },
+  //         {
+  //           path: 'news',
+  //           name: 'News',
+  //           component: () => import('@/views/operate/news'),
+  //           meta: { title: '短信模板', icon: 'table' }
+  //         },
+  //         {
+  //           path: 'news',
+  //           name: 'News',
+  //           component: () => import('@/views/operate/news'),
+  //           meta: { title: '网站通告', icon: 'table' }
+  //         }
 
-        ]
-      },
-      {
-        path: 'news',
-        name: 'News',
-        component: () => import('@/views/operate/news'),
-        meta: { title: '推送新闻', icon: 'table' }
-      },
-      {
-        path: 'news',
-        name: 'News',
-        component: () => import('@/views/operate/news'),
-        meta: { title: 'banner广告', icon: 'table' }
-      },
-      {
-        path: 'news',
-        name: 'News',
-        component: () => import('@/views/operate/news'),
-        meta: { title: '中心简介', icon: 'table' }
-      },
-      {
-        path: 'news',
-        name: 'News',
-        component: () => import('@/views/operate/news'),
-        meta: { title: '帮助中心', icon: 'table' }
-      },
-      {
-        path: 'news',
-        name: 'News',
-        component: () => import('@/views/operate/news'),
-        meta: { title: '脚注配置', icon: 'table' }
-      },
-      // 固定业务应用
-      {
-        path: 'news',
-        name: 'News',
-        component: () => import('@/views/operate/news'),
-        meta: { title: '导航配置', icon: 'table' }
-      },
-      {
-        path: 'news',
-        name: 'News',
-        component: () => import('@/views/operate/news'),
-        meta: { title: '主题配置', icon: 'table' }
-      },
-      {
-        path: 'news',
-        name: 'News',
-        component: () => import('@/views/operate/news'),
-        meta: { title: '短信模板', icon: 'table' }
-      },
-      {
-        path: 'news',
-        name: 'News',
-        component: () => import('@/views/operate/news'),
-        meta: { title: '隐私协议', icon: 'table' }
-      },
-      {
-        path: 'news',
-        name: 'News',
-        component: () => import('@/views/operate/news'),
-        meta: { title: '网站通告', icon: 'table' }
-      },
-      {
-        path: 'news',
-        name: 'News',
-        component: () => import('@/views/operate/news'),
-        meta: { title: '证书模板', icon: 'table' }
-      },
-      {
-        path: 'news',
-        name: 'News',
-        component: () => import('@/views/operate/news'),
-        meta: { title: 'logo配置', icon: 'table' }
-      }
-    ]
-  },
+  //       ]
+  //     },
+  //     {
+  //       path: 'content',
+  //       meta: { title: '内容管理' },
+  //       component: () => import('@/views/operate/content/index'), // Parent router-view
+  //       children: [
+  //         {
+  //           path: 'news',
+  //           name: 'News',
+  //           component: () => import('@/views/operate/news'),
+  //           meta: { title: '证书模板', icon: 'table' }
+  //         },
+  //         {
+  //           path: 'news',
+  //           name: 'News',
+  //           component: () => import('@/views/operate/news'),
+  //           meta: { title: 'banner广告', icon: 'table' }
+  //         }
+  //       ]
+  //     }
+  //   ]
+  // },
 
-  // 客服工具
-  {
-    path: '/approve',
-    component: Layout,
-    redirect: '/approve/role',
-    name: 'Exam',
-    meta: { title: '客服工具', icon: 'example' },
-    children: [
-      // 支持模拟题库训练、试卷可模糊搜索添加 ，需要为题目打tag
-      // 目前对题库录入的要求较低，支持单选、多选、判断即可
-      {
-        path: 'role',
-        name: 'Role',
-        component: () => import('@/views/approve/role'),
-        meta: { title: '帐号审批', icon: 'table' }
-      }, {
-        path: 'role',
-        name: 'Role',
-        component: () => import('@/views/approve/role'),
-        meta: { title: '帐号审批', icon: 'table' }
-      }
-    ]
-  },
+  // 学员管理
+  // {
+  //   path: '/approve',
+  //   component: Layout,
+  //   redirect: '/approve/role',
+  //   name: 'Exam',
+  //   meta: { title: '学员管理', icon: 'example' },
+  //   children: [
+  //     // 支持模拟题库训练、试卷可模糊搜索添加 ，需要为题目打tag
+  //     // 目前对题库录入的要求较低，支持单选、多选、判断即可
+  //     // 修改、查询用户信息的唯一入口
+  //     // 新增用户这种操作，是否应该屏蔽，添加学员账户不允许、添加管理账户可通过系统配置新增
+  //     {
+  //       path: 'role',
+  //       name: 'Role',
+  //       component: () => import('@/views/approve/role'),
+  //       meta: { title: '学员列表', icon: 'table' }
+  //     },
+  //     // 目前系统不支持线下报名，通过人工导入表格，容易出错效率也低
+  //     {
+  //       path: 'role',
+  //       name: 'Role',
+  //       component: () => import('@/views/approve/role'),
+  //       meta: { title: '线下报名', icon: 'table' }
+  //     },
+  //     {
+  //       path: 'role',
+  //       name: 'Role',
+  //       component: () => import('@/views/approve/role'),
+  //       meta: { title: '学时审批', icon: 'table' }
+  //     }
+  //   ]
+  // },
 
   // 考试管理（拆分应用）
   {
@@ -235,87 +182,34 @@ export const constantRoutes = [
         name: 'Page',
         component: () => import('@/views/exam/page'),
         meta: { title: '试卷管理', icon: 'table' }
-      },
-      // 添加考试图表分析 -- 非核心
-      {
-        path: 'manage',
-        name: 'Manage',
-        component: () => import('@/views/exam/manage'),
-        meta: { title: '考试管理', icon: 'table' }
       }
     ]
   },
 
   // 审核系统：开班、班级关联课程（分配学时、考试）、申请证书（获取学时）均需要二次审核
   // 学时策略有疑问！！
-  {
-    path: '/approve',
-    component: Layout,
-    redirect: '/approve/role',
-    name: 'Exam',
-    meta: { title: '审核管理', icon: 'example' },
-    children: [
-      // 支持模拟题库训练、试卷可模糊搜索添加 ，需要为题目打tag
-      // 目前对题库录入的要求较低，支持单选、多选、判断即可
-      {
-        path: 'role',
-        name: 'Role',
-        component: () => import('@/views/approve/role'),
-        meta: { title: '帐号审批', icon: 'table' }
-      }, {
-        path: 'role',
-        name: 'Role',
-        component: () => import('@/views/approve/role'),
-        meta: { title: '帐号审批', icon: 'table' }
-      }
-    ]
-  },
-
-  {
-    path: '/approve',
-    component: Layout,
-    redirect: '/approve/role',
-    name: 'Exam',
-    meta: { title: '财务管理', icon: 'example' },
-    children: [
-      // 支持模拟题库训练、试卷可模糊搜索添加 ，需要为题目打tag
-      // 目前对题库录入的要求较低，支持单选、多选、判断即可
-      {
-        path: 'role',
-        name: 'Role',
-        component: () => import('@/views/approve/role'),
-        meta: { title: '帐号审批', icon: 'table' }
-      }, {
-        path: 'role',
-        name: 'Role',
-        component: () => import('@/views/approve/role'),
-        meta: { title: '帐号审批', icon: 'table' }
-      }
-    ]
-  },
-
-  {
-    path: '/approve',
-    component: Layout,
-    redirect: '/approve/role',
-    name: 'Exam',
-    meta: { title: '报表管理', icon: 'example' },
-    children: [
-      // 支持模拟题库训练、试卷可模糊搜索添加 ，需要为题目打tag
-      // 目前对题库录入的要求较低，支持单选、多选、判断即可
-      {
-        path: 'role',
-        name: 'Role',
-        component: () => import('@/views/approve/role'),
-        meta: { title: '帐号审批', icon: 'table' }
-      }, {
-        path: 'role',
-        name: 'Role',
-        component: () => import('@/views/approve/role'),
-        meta: { title: '帐号审批', icon: 'table' }
-      }
-    ]
-  },
+  // {
+  //   path: '/approve',
+  //   component: Layout,
+  //   redirect: '/approve/role',
+  //   name: 'Exam',
+  //   meta: { title: '审核管理', icon: 'example' },
+  //   children: [
+  //     // 支持模拟题库训练、试卷可模糊搜索添加 ，需要为题目打tag
+  //     // 目前对题库录入的要求较低，支持单选、多选、判断即可
+  //     {
+  //       path: 'role',
+  //       name: 'Role',
+  //       component: () => import('@/views/approve/role'),
+  //       meta: { title: '帐号审批', icon: 'table' }
+  //     }, {
+  //       path: 'role',
+  //       name: 'Role',
+  //       component: () => import('@/views/approve/role'),
+  //       meta: { title: '帐号审批', icon: 'table' }
+  //     }
+  //   ]
+  // },
 
   // 系统管理
   {
@@ -377,111 +271,6 @@ export const constantRoutes = [
             meta: { title: '支付日志', icon: 'table' }
           }
         ]
-      }
-    ]
-  },
-
-  // 考勤、调查、考试监督貌似也没卵用
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
-    children: [
-      {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
-      }
-    ]
-  },
-
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
-  },
-
-  {
-    path: '/nested',
-    component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
-    meta: {
-      title: 'Nested',
-      icon: 'nested'
-    },
-    children: [
-      {
-        path: 'menu1',
-        component: () => import('@/views/nested/menu1/index'), // Parent router-view
-        name: 'Menu1',
-        meta: { title: 'Menu1' },
-        children: [
-          {
-            path: 'menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
-          },
-          {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
-              },
-              {
-                path: 'menu1-2-2',
-                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
-              }
-            ]
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
-          }
-        ]
-      },
-      {
-        path: 'menu2',
-        component: () => import('@/views/nested/menu2/index'),
-        meta: { title: 'menu2' }
-      }
-    ]
-  },
-
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
       }
     ]
   },
