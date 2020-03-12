@@ -1,6 +1,6 @@
 <template>
   <div>
-    师资管理
+    错误日志归类、统计，针对性修复系统
   </div>
 </template>
 

@@ -1,26 +1,7 @@
 <template>
   <div class="app-container">
-
+    <!-- // TODO: 学员用户不允许后台创建，管理系统账户创建放系统配置内，超级管理员才能创建 -->
     <div class="filter-container">
-      <!-- 时间段 -->
-      <el-date-picker
-        v-model="listQuery.startTime"
-        type="datetime"
-        placeholder="选择开始时间"
-        align="right"
-        class="filter-item"
-        style="width: 200px;"
-        :picker-options="pickerOptions"
-      />
-      <el-date-picker
-        v-model="listQuery.endTime"
-        type="datetime"
-        placeholder="选择结束时间"
-        align="right"
-        class="filter-item"
-        style="width: 200px;"
-        :picker-options="pickerOptions"
-      />
       <!-- 机构id -->
       <el-cascader
         v-model="listQuery.orgId"
@@ -30,44 +11,25 @@
         style="width: 200px;"
         @change="filterOrg"
       />
-      <!-- 单位 -->
-      <el-autocomplete
-        v-model="listQuery.unit"
-        :fetch-suggestions="queryUnitAsync"
-        placeholder="所在单位"
-        style="width: 200px;"
-        class="filter-item"
-        @select="filterUnit"
-      />
+
       <!-- 姓名 -->
       <el-autocomplete
-        v-model="listQuery.user"
+        v-model="listQuery.name"
         :fetch-suggestions="queryUserAsync"
-        placeholder="姓名/身份证"
+        placeholder="用户名/姓名/身份证"
         style="width: 200px;"
         class="filter-item"
         @select="filterUser"
       />
-      <!-- 支付渠道 -->
-      <el-select v-model="listQuery.channel" style="width: 200px;" class="filter-item" placeholder="支付渠道">
-        <el-option
-          v-for="item in payType"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        />
-      </el-select>
-      <!-- 订单状态分类：https://www.pmcaff.com/discuss/index/1000000000145961?pmc_param=1 -->
-      <el-select v-model="listQuery.statu" style="width: 200px;" class="filter-item" placeholder="订单状态">
-        <el-option
-          v-for="item in statuType"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        />
-      </el-select>
-      <!-- 订单号 客户复制 or 客服手打？ 客服习惯这功能嘛？？-->
-      <!-- <el-input v-model="listQuery.id" placeholder="订单号" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" /> -->
+      <!-- 手机号 -->
+      <el-autocomplete
+        v-model="listQuery.phone"
+        :fetch-suggestions="queryUserAsync"
+        placeholder="手机号"
+        style="width: 200px;"
+        class="filter-item"
+        @select="filterUser"
+      />
 
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
@@ -77,7 +39,7 @@
         导出
       </el-button>
     </div>
-
+    <!-- 用户名 、密码弱化 -->
     <el-table
       :key="tableKey"
       v-loading="listLoading"
@@ -92,57 +54,37 @@
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column label="订单号" width="150px" align="center">
+      <el-table-column label="用户名" width="150px" align="center">
         <template slot-scope="scope">
-          {{ scope.row.orderNo }}
+          {{ scope.row.userName }}
         </template>
       </el-table-column>
-      <!-- 交易状态 支付状态能否合并？ -->
-      <el-table-column label="状态" width="110px" align="center">
+      <el-table-column label="姓名" width="110px" align="center">
         <template slot-scope="{row}">
-          <!-- <el-tag :type="row.status | statusFilter">
-            {{ row.status| statusTxtFilter }}
-          </el-tag> -->
-          {{ row.statu }}
+          {{ row.cardName }}
         </template>
       </el-table-column>
-      <!-- 红色高亮 -->
-      <el-table-column label="金额" width="80px" align="center">
+      <el-table-column label="电话" width="150px" align="center">
         <template slot-scope="{row}">
-          <span style="color:red">${{ row.count }}</span>
+          <span style="color:red">${{ row.phone }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="支付方式" width="110px" align="center">
+      <el-table-column label="身份证" width="200px" align="center">
         <template slot-scope="{row}">
-          {{ row.way }}
+          {{ row.cardId }}
         </template>
       </el-table-column>
-      <!-- 悬浮预览 -->
-      <el-table-column label="开具发票" width="110px" align="center">
+      <el-table-column label="注册时间" width="200px">
         <template slot-scope="{row}">
-          {{ row.ticket ? '是' : '否' }}
+          {{ row.registerTm }}
         </template>
       </el-table-column>
-      <el-table-column label="支付时间" width="200px" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.time }}
-        </template>
-      </el-table-column>
-      <el-table-column label="商品名" width="200px">
+      <el-table-column label="机构" min-width="200px">
         <template slot-scope="{row}">
-          {{ row.goods }} <el-tag>班级</el-tag>
+          {{ row.orgNm }}
         </template>
       </el-table-column>
-      <el-table-column label="机构" width="150px">
-        <template slot-scope="{row}">
-          {{ row.org }}
-        </template>
-      </el-table-column>
-      <el-table-column label="单位" width="150px">
-        <template slot-scope="{row}">
-          {{ row.unit }}
-        </template>
-      </el-table-column>
+
       <el-table-column label="操作" align="center" width="250px" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
           <!-- 按钮权限 由列表返回 -->
@@ -152,9 +94,6 @@
           <el-button :disabled="row.status!='published'" size="mini" type="success" @click="handleModifyStatus(row,'published')">
             删除
           </el-button>
-          <el-button :disabled="row.status!='draft'" size="mini" @click="handleModifyStatus(row,'draft')">
-            详情
-          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -163,31 +102,38 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
     <!-- 编辑修改 | 详情预览 -->
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <!-- 修改订单状态处理支付异常情况，
-      机构、渠道都可以修改会导致后期对账难度增加 —— 解决办法：订单状态修改记录应要列出核对 -->
-      <!--  -->
-      <!-- TODO: 订单修改记录应存储，复审方便后期对账 -->
+    <!-- 用户信息应保持统一，所有接口均需要从用户中心查询 -->
+    <!-- 1. 未绑定手机的用户，账密登录后要求绑定手机，校验设备，异地登录也需要验证手机号
+         2. 用户端可解绑和绑定，需原手机可用
+         3. 若原手机不可用，则需联系客服后台修改
+         4. 不允许修改性别，所有性别均以身份证识别为主
+         5. 选填信息，只预览，管理端不允许修改
+         6. 展示头像信息 -->
+    <el-dialog :title="'编辑'" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="订单状态" prop="type">
-          <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key" />
-          </el-select>
+        <el-form-item label="用户名" prop="userName">
+          <el-input v-model="temp.userName" :disabled="true" />
         </el-form-item>
+        <el-form-item label="密码" prop="userName">
+          <el-input v-model="temp.passWord" :disabled="true" />
         </el-form-item>
         <el-form-item label="机构">
-          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item" />
-          </el-select>
+          <el-cascader
+            :placeholder="temp.orgNm"
+            :options="origin"
+            class="filter-item"
+            style="width: 200px;"
+            @change="filterOrg"
+          />
         </el-form-item>
-
       </el-form>
+
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">
-          Cancel
+          取消
         </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
-          Confirm
+        <el-button type="primary" @click="dialogFormVisible===false">
+          确认
         </el-button>
       </div>
     </el-dialog>
@@ -245,22 +191,20 @@ export default {
       tableKey: 0,
       calendarTypeOptions,
       statusOptions: ['published', 'draft', 'deleted'],
-      showReviewer: false,
+
       temp: {
-        id: undefined,
-        importance: 1,
-        remark: '',
-        timestamp: new Date(),
-        title: '',
-        type: '',
-        status: 'published'
+        id: 1,
+        phone: '152312312',
+        passWord: '123456', // 用户数据加密
+        userName: 'wbe123',
+        cardName: '好好',
+        cardId: '330582934923492',
+        registerTm: '2019-02-02 18:00:00',
+        orgNm: '湖南省-株洲市-天元区'
       },
       dialogFormVisible: false,
       dialogStatus: '',
 
-      textMap: {
-        editor: '编辑'
-      },
       pvData: [],
       rules: {
         type: [{ required: true, message: 'type is required', trigger: 'change' }],
@@ -274,29 +218,7 @@ export default {
       userResult: [],
       state: '',
       timeout: null,
-      // 查询条件均由后端返回
-      pickerOptions: {
-        shortcuts: [{
-          text: '今天',
-          onClick(picker) {
-            picker.$emit('pick', new Date())
-          }
-        }, {
-          text: '昨天',
-          onClick(picker) {
-            const date = new Date()
-            date.setTime(date.getTime() - 3600 * 1000 * 24)
-            picker.$emit('pick', date)
-          }
-        }, {
-          text: '一周前',
-          onClick(picker) {
-            const date = new Date()
-            date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
-            picker.$emit('pick', date)
-          }
-        }]
-      },
+
       origin: [{
         value: '1',
         label: '长沙',
@@ -307,45 +229,6 @@ export default {
           value: '13',
           label: '天心区'
         }]
-      }],
-      payType: [{
-        value: '1',
-        label: '微信-h5'
-      }, {
-        value: '2',
-        label: '支付宝-h5'
-      }, {
-        value: '3',
-        label: '微信-pc'
-      }, {
-        value: '4',
-        label: '支付宝-pc'
-      }, {
-        value: '5',
-        label: '微信-小程序'
-      }, {
-        value: '6',
-        label: '管理员开通'
-      }, {
-        value: '7',
-        label: '线下支付'
-      }],
-      // 是否考虑实物商品
-      statuType: [{
-        value: '1',
-        label: '待支付'
-      }, {
-        value: '2',
-        label: '已取消' // 待支付订单可取消
-      }, {
-        value: '3',
-        label: '已支付'
-      }, {
-        value: '4',
-        label: '已退款' // 退款渠道 - 客服退款 or 客户端主动申请 人工审核
-      }, {
-        value: '5',
-        label: '已失效' // 24小时订单失效
       }],
 
       list: null,
@@ -443,15 +326,12 @@ export default {
       // 字段设计 -- 对应表字段
       this.list = [{
         id: 1,
-        orderNo: 'No12312312',
-        statu: '已支付',
-        count: '100',
-        way: '支付宝',
-        ticket: true,
-        time: '2019-02-02 18:00:00',
-        goods: '《西方真正》',
-        org: '湖南省-株洲市-天元区',
-        unit: '湖南新领航检测技术有限公司'
+        phone: '152312312',
+        userName: 'wbe123',
+        cardName: '好好',
+        cardId: '330582934923492',
+        registerTm: '2019-02-02 18:00:00',
+        orgNm: '湖南省-株洲市-天元区'
       }]
       this.total = 100
 
@@ -460,10 +340,13 @@ export default {
         this.listLoading = false
       }, 1.5 * 1000)
     },
+
+    // 分页
     handleFilter() {
       this.listQuery.page = 1
       this.getList()
     },
+
     // 删除订单
     handleModifyStatus(row, status) {
       this.$message({
@@ -473,59 +356,16 @@ export default {
       row.status = status
     },
 
-    createData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-          this.temp.author = 'vue-element-admin'
-          createArticle(this.temp).then(() => {
-            this.list.unshift(this.temp)
-            this.dialogFormVisible = false
-            this.$notify({
-              title: 'Success',
-              message: 'Created Successfully',
-              type: 'success',
-              duration: 2000
-            })
-          })
-        }
-      })
-    },
     // 编辑订单
     handleUpdate(row) {
       // 注入表单数据
       this.temp = Object.assign({}, row) // copy obj
       this.temp.timestamp = new Date(this.temp.timestamp)
 
-      this.dialogStatus = 'editor'
       this.dialogFormVisible = true
 
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
-      })
-    },
-    updateData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          const tempData = Object.assign({}, this.temp)
-          tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          updateArticle(tempData).then(() => {
-            for (const v of this.list) {
-              if (v.id === this.temp.id) {
-                const index = this.list.indexOf(v)
-                this.list.splice(index, 1, this.temp)
-                break
-              }
-            }
-            this.dialogFormVisible = false
-            this.$notify({
-              title: 'Success',
-              message: 'Update Successfully',
-              type: 'success',
-              duration: 2000
-            })
-          })
-        }
       })
     },
 

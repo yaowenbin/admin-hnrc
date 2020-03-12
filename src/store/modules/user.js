@@ -78,6 +78,14 @@ const actions = {
     })
   },
 
+  setToken({ commit }, token) {
+    return new Promise(resolve => {
+      setToken(token) // must remove  token  first
+      commit('SET_TOKEN', token)
+      resolve()
+    })
+  },
+
   // remove token
   resetToken({ commit }) {
     return new Promise(resolve => {
